@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "NoteForge",
+    "slug": "noteforge",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": ["**/*"]
+  }
+}
