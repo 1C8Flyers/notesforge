@@ -261,11 +261,11 @@ Last updated: 2026-02-20
 - [ ] Validate managed transcription provider on real meeting samples and tune defaults.
 
 ### Local-First Track (New)
-- [ ] Add `local` provider mode to worker (`mock | managed | local`).
-- [ ] Implement local ASR + diarization adapter behind `TranscriptionProvider`.
-- [ ] Add local notes generation path via Ollama with fallback to current notes logic.
-- [ ] Add local setup docs (dependencies, model downloads, CPU/GPU guidance).
-- [ ] Add acceptance checks for local mode (30-minute sample, speaker separation, summary/actions).
+- [x] Add `local` provider mode to worker (`mock | managed | local`).
+- [x] Implement local ASR + diarization adapter behind `TranscriptionProvider`.
+- [x] Add local notes generation path via Ollama with fallback to current notes logic.
+- [x] Add local setup docs (dependencies, model downloads, CPU/GPU guidance).
+- [x] Add acceptance checks for local mode (30-minute sample, speaker separation, summary/actions).
 
 ### Next
-- [ ] Add QA dataset + acceptance test automation.
+- [ ] Add QA dataset (noisy + long meeting samples) and wire smoke checks into CI.

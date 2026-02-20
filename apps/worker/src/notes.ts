@@ -1,6 +1,16 @@
-type Segment = { text: string; speaker: string; id: string };
+export type Segment = { text: string; speaker: string; id: string };
 
-export function generateSummary(segments: Segment[]) {
+export type NotesOutput = {
+  summary: string;
+  keyPoints: string[];
+  actionItems: Array<{
+    task: string;
+    ownerName: string;
+    sourceSegmentId: string;
+  }>;
+};
+
+export function generateSummary(segments: Segment[]): NotesOutput {
   const joined = segments.map((s) => `${s.speaker}: ${s.text}`).join(" ");
   const summary = joined.length > 0
     ? `## Summary\n${joined.slice(0, 700)}${joined.length > 700 ? "..." : ""}`

@@ -1,5 +1,5 @@
 import { query } from "./db";
-import { generateSummary } from "./notes";
+import { generateMeetingNotes } from "./notes-provider";
 
 type SegmentRow = {
   id: string;
@@ -17,7 +17,7 @@ export async function processMeetingNotes(meetingId: string) {
     [meetingId]
   );
 
-  const output = generateSummary(segments);
+  const output = await generateMeetingNotes(segments);
 
   await query(
     `insert into meeting_notes(meeting_id, summary_md, key_points_json, updated_at)
@@ -33,7 +33,7 @@ export async function processMeetingNotes(meetingId: string) {
     await query(
       `insert into action_items(meeting_id, owner_name, task, status, source_segment_id)
        values($1, $2, $3, 'open', $4)`,
-      [meetingId, actionItem.ownerName, actionItem.task, actionItem.sourceSegmentId]
+      [meetingId, actionItem.ownerName || null, actionItem.task, actionItem.sourceSegmentId || null]
     );
   }
 }

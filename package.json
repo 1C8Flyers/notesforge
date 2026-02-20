@@ -11,6 +11,7 @@
     "dev:worker": "npm run dev -w apps/worker",
     "dev:mobile": "npm run start -w apps/mobile",
     "build": "npm run build -ws",
-    "lint": "npm run lint -ws"
+    "lint": "npm run lint -ws",
+    "qa:smoke": "node scripts/acceptance-smoke.mjs"
   }
 }
