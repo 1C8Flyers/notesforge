@@ -14,6 +14,10 @@ const envSchema = z.object({
   S3_SECRET_ACCESS_KEY: z.string().optional(),
   S3_FORCE_PATH_STYLE: z.coerce.boolean().default(true),
   S3_SIGNED_DOWNLOAD_EXPIRES_SEC: z.coerce.number().int().positive().default(900),
+  AUDIO_RETENTION_ENABLED: z.coerce.boolean().default(false),
+  AUDIO_RETENTION_DAYS: z.coerce.number().int().positive().default(30),
+  AUDIO_RETENTION_SWEEP_MINUTES: z.coerce.number().int().positive().default(60),
+  AUDIO_RETENTION_BATCH_SIZE: z.coerce.number().int().positive().default(100),
   DEEPGRAM_API_KEY: z.string().optional(),
   DEEPGRAM_MODEL: z.string().default("nova-2"),
   DEEPGRAM_LANGUAGE: z.string().optional()

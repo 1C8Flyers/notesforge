@@ -42,6 +42,8 @@ export default function App() {
   const [title, setTitle] = useState("Weekly sync");
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [audioUri, setAudioUri] = useState<string | null>(null);
+  const [consentAcceptedAt, setConsentAcceptedAt] = useState<string | null>(null);
+  const [showConsentPrompt, setShowConsentPrompt] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -80,7 +82,7 @@ export default function App() {
     }
   }
 
-  async function startRecording() {
+  async function beginRecording() {
     setError(null);
     const permission = await Audio.requestPermissionsAsync();
     if (!permission.granted) {
@@ -93,6 +95,23 @@ export default function App() {
     await nextRecording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
     await nextRecording.startAsync();
     setRecording(nextRecording);
+  }
+
+  async function startRecording() {
+    if (!consentAcceptedAt) {
+      setShowConsentPrompt(true);
+      return;
+    }
+
+    await beginRecording();
+  }
+
+  async function acceptConsentAndRecord() {
+    if (!consentAcceptedAt) {
+      setConsentAcceptedAt(new Date().toISOString());
+    }
+    setShowConsentPrompt(false);
+    await beginRecording();
   }
 
   async function stopRecording() {
@@ -221,6 +240,21 @@ export default function App() {
 
         <View style={styles.card}>
           <Text style={styles.h2}>Record</Text>
+          {showConsentPrompt || !consentAcceptedAt ? (
+            <View style={styles.consentBox}>
+              <Text style={styles.consentText}>
+                By recording, you confirm participants were informed and consented where required by law.
+              </Text>
+              <Text style={styles.consentMeta}>
+                This consent is session-scoped in MVP and should be legally reviewed before production launch.
+              </Text>
+              <Pressable style={styles.buttonGhost} onPress={acceptConsentAndRecord}>
+                <Text style={styles.buttonGhostText}>I consent · Start recording</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <Text style={styles.consentMeta}>Consent accepted at {new Date(consentAcceptedAt).toLocaleString()}.</Text>
+          )}
           <TextInput placeholder="Meeting title" placeholderTextColor="#666" style={styles.input} value={title} onChangeText={setTitle} />
           <View style={styles.row}>
             <Pressable style={styles.button} onPress={recording ? stopRecording : startRecording}>
@@ -336,6 +370,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     gap: 8
+  },
+  consentBox: {
+    borderColor: "#3f3f46",
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    gap: 8,
+    backgroundColor: "#141414"
+  },
+  consentText: {
+    color: "#e4e4e7",
+    lineHeight: 20
+  },
+  consentMeta: {
+    color: "#a1a1aa",
+    fontSize: 12,
+    lineHeight: 18
   },
   row: {
     flexDirection: "row",

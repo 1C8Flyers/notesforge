@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import { env } from "./env";
 import { processMeetingAudio } from "./process-audio";
 import { processMeetingNotes } from "./process-notes";
+import { runAudioRetentionSweep } from "./retention";
 import { getTelemetrySnapshot, recordJobFailure, recordJobSuccess } from "./telemetry";
 
 const connection = { url: env.REDIS_URL };
@@ -42,5 +43,22 @@ notesWorker.on("failed", (job, error) => {
 setInterval(() => {
   console.log("Worker telemetry", getTelemetrySnapshot());
 }, 60_000);
+
+if (env.AUDIO_RETENTION_ENABLED) {
+  const runSweep = async () => {
+    try {
+      await runAudioRetentionSweep();
+    } catch (error) {
+      console.error("Audio retention sweep crashed", {
+        message: error instanceof Error ? error.message : String(error)
+      });
+    }
+  };
+
+  void runSweep();
+  setInterval(() => {
+    void runSweep();
+  }, env.AUDIO_RETENTION_SWEEP_MINUTES * 60_000);
+}
 
 console.log("Worker online");

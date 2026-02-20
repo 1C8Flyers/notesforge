@@ -254,6 +254,8 @@ Last updated: 2026-02-20
 - [x] Replaced mocked upload URL with real S3-compatible presigned upload flow in API.
 - [x] Added basic worker telemetry for job durations and failure rates.
 - [x] Replaced mock transcription provider with managed transcription + diarization provider integration (Deepgram Option A).
+- [x] Added mobile recording consent gate + legal copy (session-scoped MVP implementation).
+- [x] Added configurable raw-audio retention cleanup controls in worker (S3 delete sweep).
 
 ### In Progress
 - [ ] Validate managed transcription provider on real meeting samples and tune defaults.
@@ -266,6 +268,4 @@ Last updated: 2026-02-20
 - [ ] Add acceptance checks for local mode (30-minute sample, speaker separation, summary/actions).
 
 ### Next
-- [ ] Add consent screen + legal copy before recording.
-- [ ] Add retention controls for raw audio cleanup.
 - [ ] Add QA dataset + acceptance test automation.
