@@ -256,6 +256,7 @@ Last updated: 2026-02-20
 - [x] Replaced mock transcription provider with managed transcription + diarization provider integration (Deepgram Option A).
 - [x] Added mobile recording consent gate + legal copy (session-scoped MVP implementation).
 - [x] Added configurable raw-audio retention cleanup controls in worker (S3 delete sweep).
+- [x] Containerized full backend stack (Postgres, Redis, migrations, API, worker) via Docker Compose.
 
 ### In Progress
 - [ ] Validate managed transcription provider on real meeting samples and tune defaults.

@@ -16,16 +16,25 @@ Minimalist AI meeting notes app (Obsidian-style dark UI) with:
 
 1. Copy env file:
    - `cp .env.example .env`
-2. Start infrastructure:
-   - `docker compose up -d`
+2. Start full stack in Docker (Postgres, Redis, migrations, API, worker):
+   - `docker compose up -d --build`
 3. Install dependencies:
    - `npm install`
-4. Run migration:
-   - `psql postgres://postgres:postgres@localhost:5432/noteforge -f apps/api/migrations/001_init.sql`
-5. Start services in separate terminals:
-   - `npm run dev:api`
-   - `npm run dev:worker`
-   - `npm run dev:mobile`
+4. Start mobile app in separate terminal:
+   - `npm run dev:mobile -- --web`
+
+Note: API and worker already run in Docker after step 2.
+
+## Docker deployment notes
+
+- Default exposed ports:
+  - API: `4000`
+  - Postgres: `5432`
+  - Redis: `6379`
+- To avoid host port conflicts (e.g., on NAS), set:
+  - `POSTGRES_HOST_PORT=55432`
+  - `REDIS_HOST_PORT=56379`
+  - `API_HOST_PORT=4000`
 
 ## Notes
 
